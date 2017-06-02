@@ -6,11 +6,10 @@ public class Main {
 	
 	final static int N_MAX_GENERATIONS = 100;
     final static double PROB_CROSSOVER = 0.8;
-    final static double PROB_MUTACION = 0.1;
+    final static double PROB_MUTATION = 0.1;
     final static int SQUARES_ROULETTE = 100;
     
 	public static void main(String[] args) {
-		
 		
 		int n = 2; //number of players
 		Prisioner[] prisioners = new Prisioner[n];
@@ -27,6 +26,7 @@ public class Main {
 		}
 	}
 
+	//------------------------Selection--------------------------------
 	private static Prisioner[] selection(Prisioner[] prisioners) {
 		//------------------------Tournament-------------------------------
 		int[][]	history = new int[3][2];
@@ -87,6 +87,14 @@ public class Main {
 				prisioner2.sumScore(4);
 				totalScores[0] += 8;
 			}
+			
+			for(int k = 0; k < history.length - 1; k++){
+				for(int t = 0; t < history[0].length; t++){
+					history[k][t] = history[k + 1][t];
+				}
+			}
+			history[history.length - 1][0] = answer1;
+			history[history.length - 1][1] = answer2;
 		}
 		
 	}
@@ -134,20 +142,21 @@ public class Main {
 		}
 		return indexBestPrisioner;
 	}
-
+	//------------------------Crossover--------------------------------
 	private static Prisioner[] crossover(Prisioner[] prisioners) {
 		ArrayList<Prisioner> prisionersCrossList = getPrisionersCross(prisioners);
         
         Prisioner[] prisionersCross = new Prisioner[prisionersCrossList.size()];
+        if(prisionersCross.length > 0){
+        	Prisioner[] prisionersCrossed = cross(prisionersCrossList.toArray(prisionersCross));
         
-        Prisioner[] prisionersCrossed = cross(prisionersCrossList.toArray(prisionersCross));
-        
-        int count = 0; //Contador de cruzados añadidos al array de individuos
-        for(int j = 0; j < prisioners.length; j++){
-        	if(prisioners[j] == null && prisionersCrossed.length > count){
-        		prisioners[j] = prisionersCrossed[count];
-        		count++;
-        	}
+	        int count = 0; //Contador de cruzados añadidos al array de individuos
+	        for(int j = 0; j < prisioners.length; j++){
+	        	if(prisioners[j] == null && prisionersCrossed.length > count){
+	        		prisioners[j] = prisionersCrossed[count];
+	        		count++;
+	        	}
+	        }
         }
 		return prisioners;
 	}
@@ -189,11 +198,16 @@ public class Main {
     	}
     	return prisionersCross;
 	}
-	
+	//-------------------------Mutation--------------------------------
 	private static Prisioner[] mutation(Prisioner[] prisioners) {
+		for(int i = 0; i < prisioners.length; i++){
+			prisioners[i].mutate(PROB_MUTATION);
+		}
 		return prisioners;
 	}
 	
+	
+	//----------------------Other functions----------------------------
 	private static int randomInt(int m, int n){
         return (int) Math.floor(Math.random()*(n-m+1)+m);
     }
