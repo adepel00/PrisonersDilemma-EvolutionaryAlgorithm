@@ -11,7 +11,7 @@ public class Main {
     
 	public static void main(String[] args) {
 		
-		int n = 2; //number of players
+		int n = 10; //number of players
 		Prisioner[] prisioners = new Prisioner[n];
 		for(int i = 0; i < prisioners.length; i++){
 			prisioners[i] = new Prisioner();
@@ -29,17 +29,17 @@ public class Main {
 	//------------------------Selection--------------------------------
 	private static Prisioner[] selection(Prisioner[] prisioners) {
 		//------------------------Tournament-------------------------------
-		int[][]	history = new int[3][2];
-		for(int i = 0; i < history.length; i++){
-			for(int j = 0; j < history[0].length; j++){
-				history[i][j] = randomInt(0, 1);
+		int[][]	inithistory = new int[3][2];
+		for(int i = 0; i < inithistory.length; i++){
+			for(int j = 0; j < inithistory[0].length; j++){
+				inithistory[i][j] = randomInt(0, 1);
 			}
 		}
 		
 		int[] totalScores = {0};
 		for(int i = 0; i < prisioners.length - 1; i++){
-			for(int j = 0; j < prisioners.length; j++){
-				tournament(prisioners[i], prisioners[j], history, totalScores);
+			for(int j = i + 1; j < prisioners.length; j++){
+				tournament(prisioners[i], prisioners[j], inithistory, totalScores);
 			}
 		}
 		for(int x = 0; x < prisioners.length; x++){
@@ -52,7 +52,9 @@ public class Main {
 		return prisioners;
 	}
 	
-	private static void tournament(Prisioner prisioner1, Prisioner prisioner2, int[][] history, int[] totalScores) {
+	private static void tournament(Prisioner prisioner1, Prisioner prisioner2, int[][] inithistory, int[] totalScores) {
+		
+		int[][] history = inithistory;
 		for(int x = 0; x < 6; x++){
 			StringBuilder index1Bin = new StringBuilder();
 			for(int i = 0; i < history.length; i++){
