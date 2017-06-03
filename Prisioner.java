@@ -78,4 +78,8 @@ public class Prisioner {
 		return string.toString();
 	}
 
+	public void setScore(int score) {
+		this.score = score;
+	}
+
 }

@@ -17,6 +17,10 @@ public class Main {
 			prisioners[i] = new Prisioner();
 		}
 		for(int x = 0; x < N_MAX_GENERATIONS; x++){
+			
+			System.out.println("---------------------------------------------------------------------");
+			//System.out.println(Arrays.toString(prisioners));
+			
 			//------------------------Selection--------------------------------
 			prisioners = selection(prisioners);
 			//------------------------Crossover--------------------------------
@@ -44,6 +48,12 @@ public class Main {
 		}
 		for(int x = 0; x < prisioners.length; x++){
 			prisioners[x].calculateAptitude(totalScores[0]);
+		}
+		
+		System.out.println("El mejor prisionero es: " + prisioners[bestPrisionerIndex(prisioners)] +  "Tiene puntuacion: " + prisioners[bestPrisionerIndex(prisioners)].getScore());
+		
+		for(int y = 0; y < prisioners.length; y++){
+				prisioners[y].setScore(0);
 		}
 		
 		//------------------------Roulette---------------------------------
@@ -115,6 +125,7 @@ public class Main {
          	   prisioners[k].setIndexLastSquare(prisioners[k].getIndexLastSquare() + squaresNotAssigned);
             }
         }
+       
 		//---------------------Throw Roulette------------------------------
         Prisioner[] prisionersSelected = new Prisioner[prisioners.length];
     	for(int x = 0; x < prisioners.length; x++){
@@ -126,7 +137,6 @@ public class Main {
       		   }
       	   }
          }
-    	System.out.println(Arrays.toString(prisionersSelected));
         return prisionersSelected;
 	}
 
